@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppFilmesAPI.Models;
 
@@ -16,19 +17,5 @@ public class Artista
     [DataType(DataType.Date)]
     public DateTime DataNascimento { get; set; }
 
-    [Required]
-    public int Idade => CalcularIdade();
-
-
-    private int CalcularIdade()
-    {
-        DateTime dataAtual = DateTime.Now;
-        int idade = dataAtual.Year - DataNascimento.Year;
-        if (dataAtual.Month < DataNascimento.Month || (dataAtual.Month == DataNascimento.Month && dataAtual.Day < DataNascimento.Day))
-        {
-            idade--;
-        }
-        
-        return idade;
-    }
+    public int Idade { get; set; }
 }

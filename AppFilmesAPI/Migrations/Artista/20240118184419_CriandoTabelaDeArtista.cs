@@ -18,7 +18,8 @@ namespace AppFilmesAPI.Migrations.Artista
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Idade = table.Column<int>(type: "int", nullable: false, computedColumnSql: "DATEDIFF(YEAR, DataNascimento, GETDATE())")
                 },
                 constraints: table =>
                 {

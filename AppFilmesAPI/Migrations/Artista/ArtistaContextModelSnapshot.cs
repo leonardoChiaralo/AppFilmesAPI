@@ -33,13 +33,18 @@ namespace AppFilmesAPI.Migrations.Artista
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Idade")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("int")
+                        .HasComputedColumnSql("DATEDIFF(YEAR, DataNascimento, GETDATE())");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artistas", (string)null);
+                    b.ToTable("Artistas");
                 });
 #pragma warning restore 612, 618
         }

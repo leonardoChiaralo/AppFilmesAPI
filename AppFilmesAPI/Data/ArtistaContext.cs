@@ -10,4 +10,9 @@ public class ArtistaContext : DbContext
     }
 
     public DbSet<Artista> Artistas { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Artista>().Property(a => a.Idade).HasComputedColumnSql("DATEDIFF(YEAR, DataNascimento, GETDATE())").IsRequired();
+    }
 }

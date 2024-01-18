@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppFilmesAPI.Migrations.Artista
 {
     [DbContext(typeof(ArtistaContext))]
-    [Migration("20240118161703_CriandoTabelaDeArtista")]
+    [Migration("20240118184419_CriandoTabelaDeArtista")]
     partial class CriandoTabelaDeArtista
     {
         /// <inheritdoc />
@@ -35,6 +35,11 @@ namespace AppFilmesAPI.Migrations.Artista
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Idade")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("int")
+                        .HasComputedColumnSql("DATEDIFF(YEAR, DataNascimento, GETDATE())");
 
                     b.Property<string>("Nome")
                         .IsRequired()
