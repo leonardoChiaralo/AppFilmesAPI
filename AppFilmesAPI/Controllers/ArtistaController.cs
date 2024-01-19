@@ -65,4 +65,14 @@ public class ArtistaController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletarArtista(int id)
+    {
+        var artista = _context.Artistas.FirstOrDefault(artista => artista.Id == id);
+        if (artista == null) return NotFound();
+        _context.Artistas.Remove(artista);
+        _context.SaveChanges();
+        return NoContent();
+    }
 }
