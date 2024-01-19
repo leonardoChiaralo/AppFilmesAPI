@@ -10,5 +10,6 @@ public class ArtistaProfile : Profile
     {
         CreateMap<CreateArtistaDTO, Artista>();
         CreateMap<UpdateArtistaDTO, Artista > ();
+        CreateMap<ReadArtistaDTO, Artista>();
     }
 }

@@ -29,15 +29,15 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Filme> ExibirFilmes()
+    public IEnumerable<ReadFilmeDTO> ExibirFilmes()
     {
-        return _context.Filmes;
+        return _mapper.Map<List<ReadFilmeDTO>>(_context.Filmes);
     }
 
     [HttpGet("paginados")]
-    public IEnumerable<Filme> ExibirFilmesPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    public IEnumerable<ReadFilmeDTO> ExibirFilmesPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _context.Filmes.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadFilmeDTO>>(_context.Filmes.Skip(skip).Take(take));
     }
 
     [HttpGet("{id}")]
@@ -45,7 +45,8 @@ public class FilmeController : ControllerBase
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
-        return Ok(filme);
+        var filmeDTO = _mapper.Map<ReadFilmeDTO>(filme);
+        return Ok(filmeDTO);
     }
 
     [HttpGet("titulo/{titulo}")]
@@ -53,7 +54,8 @@ public class FilmeController : ControllerBase
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Titulo == titulo);
         if (filme == null) return NotFound();
-        return Ok(filme);
+        var filmeDTO = _mapper.Map<ReadFilmeDTO>(filme);
+        return Ok(filmeDTO);
     }
 
     [HttpPut("{id}")]

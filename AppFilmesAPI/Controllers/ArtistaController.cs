@@ -29,15 +29,15 @@ public class ArtistaController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Artista> ExibirArtistas()
+    public IEnumerable<ReadArtistaDTO> ExibirArtistas()
     {
-        return _context.Artistas;
+        return _mapper.Map<List<ReadArtistaDTO>>(_context.Artistas);
     }
 
     [HttpGet("paginados")]
-    public IEnumerable<Artista> ExibirArtistasPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    public IEnumerable<ReadArtistaDTO> ExibirArtistasPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _context.Artistas.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadArtistaDTO>>(_context.Artistas.Skip(skip).Take(take));
     }
 
     [HttpGet("{id}")]
@@ -45,7 +45,8 @@ public class ArtistaController : ControllerBase
     {
         var artista = _context.Artistas.FirstOrDefault(artista => artista.Id == id);
         if (artista == null) return NotFound();
-        return Ok(artista);
+        var artistaDTO = _mapper.Map<ReadArtistaDTO>(artista);
+        return Ok(artistaDTO);
     }
 
     [HttpGet("nome/{nome}")]
@@ -53,7 +54,8 @@ public class ArtistaController : ControllerBase
     {
         var artista = _context.Artistas.FirstOrDefault(artista => artista.Nome == nome);
         if (artista == null) return NotFound();
-        return Ok(artista);
+        var artistaDTO = _mapper.Map<ReadArtistaDTO>(artista);
+        return Ok(artistaDTO);
     }
 
     [HttpPut("{id}")]
