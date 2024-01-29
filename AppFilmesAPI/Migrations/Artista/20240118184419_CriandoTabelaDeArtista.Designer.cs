@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppFilmesAPI.Migrations.Artista
 {
-    [DbContext(typeof(ArtistaContext))]
+    [DbContext(typeof(AppFilmesContext))]
     [Migration("20240118184419_CriandoTabelaDeArtista")]
     partial class CriandoTabelaDeArtista
     {

@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppFilmesAPI.Data;
 
-public class ArtistaContext : DbContext
+public class AppFilmesContext : DbContext
 {
-    public ArtistaContext(DbContextOptions<ArtistaContext> opts) : base(opts)
+    public AppFilmesContext(DbContextOptions<AppFilmesContext> opts) : base(opts)
     {
     }
+
+    public DbSet<Filme> Filmes { get; set; }
 
     public DbSet<Artista> Artistas { get; set; }
 

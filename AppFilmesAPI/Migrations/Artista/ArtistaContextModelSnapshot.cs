@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppFilmesAPI.Migrations.Artista;
 
-[DbContext(typeof(ArtistaContext))]
+[DbContext(typeof(AppFilmesContext))]
 partial class ArtistaContextModelSnapshot : ModelSnapshot
 {
     protected override void BuildModel(ModelBuilder modelBuilder)
