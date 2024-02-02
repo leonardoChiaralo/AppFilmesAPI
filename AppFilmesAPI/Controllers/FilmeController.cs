@@ -1,7 +1,6 @@
 ﻿using AppFilmesAPI.Data;
-using AppFilmesAPI.Data.DTOs;
+using AppFilmesAPI.Data.DTOs.Filme;
 using AppFilmesAPI.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppFilmesAPI.Controllers;
@@ -11,33 +10,59 @@ namespace AppFilmesAPI.Controllers;
 public class FilmeController : ControllerBase
 {
     private AppFilmesContext _context;
-    private IMapper _mapper;
 
-    public FilmeController(AppFilmesContext context, IMapper mapper)
+    public FilmeController(AppFilmesContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     [HttpPost]
     public IActionResult RegistrarFilme([FromBody] CreateFilmeDTO filmeDTO)
     {
-        Filme filme = _mapper.Map<Filme>(filmeDTO);
+        Filme filme = new Filme 
+        {
+            Titulo = filmeDTO.Titulo,
+            Ano = filmeDTO.Ano,
+            Genero = filmeDTO.Genero,
+            Diretor = filmeDTO.Diretor,
+            Duracao = filmeDTO.Duracao,
+            Nota = filmeDTO.Nota,
+        };
         _context.Filmes.Add(filme);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(ExibirFilmePorId), new { id = filme.Id }, filme);
+        return CreatedAtAction(nameof(ExibirFilmePorId), new {id = filme.Id}, filme);
     }
 
     [HttpGet]
     public IEnumerable<ReadFilmeDTO> ExibirFilmes()
     {
-        return _mapper.Map<List<ReadFilmeDTO>>(_context.Filmes);
+        var filmes = _context.Filmes.ToList();
+        var readFilmes = filmes.Select(filme => new ReadFilmeDTO 
+        {
+            Titulo = filme.Titulo,
+            Ano = filme.Ano,
+            Genero = filme.Genero,
+            Diretor = filme.Diretor,
+            Duracao = filme.Duracao,
+            Nota = filme.Nota,
+        }).ToList();
+        return readFilmes;
     }
 
     [HttpGet("paginados")]
     public IEnumerable<ReadFilmeDTO> ExibirFilmesPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _mapper.Map<List<ReadFilmeDTO>>(_context.Filmes.Skip(skip).Take(take));
+        var filmes = _context.Filmes.ToList();
+        var readFilmes = filmes.Select(filme => new ReadFilmeDTO
+        {
+            Titulo = filme.Titulo,
+            Ano = filme.Ano,
+            Genero = filme.Genero,
+            Diretor = filme.Diretor,
+            Duracao = filme.Duracao,
+            Nota = filme.Nota,
+        }).ToList();
+        return readFilmes.Skip(skip).Take(take);
     }
 
     [HttpGet("{id}")]
@@ -45,17 +70,16 @@ public class FilmeController : ControllerBase
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
-        var filmeDTO = _mapper.Map<ReadFilmeDTO>(filme);
-        return Ok(filmeDTO);
-    }
-
-    [HttpGet("titulo/{titulo}")]
-    public IActionResult ExibirFilmePorTitulo(string titulo)
-    {
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Titulo == titulo);
-        if (filme == null) return NotFound();
-        var filmeDTO = _mapper.Map<ReadFilmeDTO>(filme);
-        return Ok(filmeDTO);
+        var readFilme = new ReadFilmeDTO
+        {
+            Titulo = filme.Titulo,
+            Ano = filme.Ano,
+            Genero = filme.Genero,
+            Diretor = filme.Diretor,
+            Duracao = filme.Duracao,
+            Nota = filme.Nota,
+        };
+        return Ok(readFilme);
     }
 
     [HttpPut("{id}")]
@@ -63,7 +87,12 @@ public class FilmeController : ControllerBase
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
-        _mapper.Map(filmeDTO, filme);
+        filme.Titulo = filmeDTO.Titulo;
+        filme.Ano = filmeDTO.Ano;
+        filme.Genero = filmeDTO.Genero;
+        filme.Diretor = filmeDTO.Diretor;
+        filme.Duracao = filmeDTO.Duracao;
+        filme.Nota = filmeDTO.Nota;
         _context.SaveChanges();
         return NoContent();
     }

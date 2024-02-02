@@ -1,8 +1,9 @@
-﻿namespace AppFilmesAPI.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Filme
+namespace AppFilmesAPI.Data.DTOs.Filme;
+
+public class UpdateFilmeDTO
 {
-    public int Id { get; set; }
     public string? Titulo { get; set; }
     public string? Ano { get; set; }
     public string? Genero { get; set; }
