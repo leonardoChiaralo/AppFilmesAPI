@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("SqlServer");
-builder.Services.AddDbContext<FilmeContext>(opts => opts.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ArtistaContext>(opts => opts.UseSqlServer(connectionString));
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddDbContext<AppFilmesContext>(opts => opts.UseSqlServer(connectionString));
 
 // Add services to the container.
 

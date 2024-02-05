@@ -1,7 +1,6 @@
 ﻿using AppFilmesAPI.Data;
-using AppFilmesAPI.Data.DTOs;
+using AppFilmesAPI.Data.DTOs.Artista;
 using AppFilmesAPI.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppFilmesAPI.Controllers;
@@ -10,34 +9,50 @@ namespace AppFilmesAPI.Controllers;
 [Route("[controller]")]
 public class ArtistaController : ControllerBase
 {
-    private ArtistaContext _context;
-    private IMapper _mapper;
+    private AppFilmesContext _context;
 
-    public ArtistaController(ArtistaContext context, IMapper mapper)
+    public ArtistaController(AppFilmesContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     [HttpPost]
     public IActionResult RegistrarArtista([FromBody] CreateArtistaDTO artistaDTO)
     {
-        Artista artista = _mapper.Map<Artista>(artistaDTO);
+        Artista artista = new Artista
+        {
+            Nome = artistaDTO.Nome,
+            DataNascimento = artistaDTO.DataNascimento,
+        };
         _context.Artistas.Add(artista);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(ExibirArtistaPorId), new { id = artista.Id }, artista);
+        return CreatedAtAction(nameof(ExibirArtistaPorId), new {id =  artista.Id}, artista);
     }
 
     [HttpGet]
     public IEnumerable<ReadArtistaDTO> ExibirArtistas()
     {
-        return _mapper.Map<List<ReadArtistaDTO>>(_context.Artistas);
+        var artistas = _context.Artistas.ToList();
+        var readArtistas = artistas.Select(artista => new ReadArtistaDTO
+        {
+            Nome = artista.Nome,
+            DataNascimento = artista.DataNascimento,
+            Idade = artista.Idade,
+        }).ToList();
+        return readArtistas;
     }
 
     [HttpGet("paginados")]
     public IEnumerable<ReadArtistaDTO> ExibirArtistasPaginados([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _mapper.Map<List<ReadArtistaDTO>>(_context.Artistas.Skip(skip).Take(take));
+        var artistas = _context.Artistas.ToList();
+        var readArtistas = artistas.Select(artista => new ReadArtistaDTO
+        {
+            Nome = artista.Nome,
+            DataNascimento = artista.DataNascimento,
+            Idade = artista.Idade,
+        }).ToList();
+        return readArtistas.Skip(skip).Take(take);
     }
 
     [HttpGet("{id}")]
@@ -45,17 +60,13 @@ public class ArtistaController : ControllerBase
     {
         var artista = _context.Artistas.FirstOrDefault(artista => artista.Id == id);
         if (artista == null) return NotFound();
-        var artistaDTO = _mapper.Map<ReadArtistaDTO>(artista);
-        return Ok(artistaDTO);
-    }
-
-    [HttpGet("nome/{nome}")]
-    public IActionResult ExibirArtistaPorNome(string nome)
-    {
-        var artista = _context.Artistas.FirstOrDefault(artista => artista.Nome == nome);
-        if (artista == null) return NotFound();
-        var artistaDTO = _mapper.Map<ReadArtistaDTO>(artista);
-        return Ok(artistaDTO);
+        var readArtista = new ReadArtistaDTO
+        {
+            Nome = artista.Nome,
+            DataNascimento = artista.DataNascimento,
+            Idade = artista.Idade,
+        };
+        return Ok(readArtista);
     }
 
     [HttpPut("{id}")]
@@ -63,7 +74,9 @@ public class ArtistaController : ControllerBase
     {
         var artista = _context.Artistas.FirstOrDefault(artista => artista.Id == id);
         if (artista == null) return NotFound();
-        _mapper.Map(artistaDTO, artista);
+        artista.Nome = artistaDTO.Nome;
+        artista.DataNascimento = artistaDTO.DataNascimento;
+        artista.Idade = artistaDTO.Idade;
         _context.SaveChanges();
         return NoContent();
     }
