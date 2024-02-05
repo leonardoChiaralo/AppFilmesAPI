@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppFilmesAPI.Migrations
 {
     [DbContext(typeof(AppFilmesContext))]
-    [Migration("20240202182033_CriandoTabelasFilmesEArtistas")]
-    partial class CriandoTabelasFilmesEArtistas
+    [Migration("20240205184301_CriandoTabelas")]
+    partial class CriandoTabelas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

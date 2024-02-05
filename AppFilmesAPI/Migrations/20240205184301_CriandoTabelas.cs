@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppFilmesAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class CriandoTabelasFilmesEArtistas : Migration
+    public partial class CriandoTabelas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,7 @@ namespace AppFilmesAPI.Migrations
                     Genero = table.Column<string>(type: "varchar(50)", nullable: false),
                     Diretor = table.Column<string>(type: "varchar(100)", nullable: false),
                     Duracaomin = table.Column<int>(name: "Duracao(min.)", type: "int", nullable: false),
-                    Nota = table.Column<double>(type: "float", nullable: true)
+                    Nota = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
