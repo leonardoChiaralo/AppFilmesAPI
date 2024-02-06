@@ -6,4 +6,5 @@ public class Artista
     public string? Nome { get; set; }
     public DateTime DataNascimento { get; set; }
     public int Idade { get; set; }
+    public ICollection<Filme>? Filmografia { get; set; }
 }

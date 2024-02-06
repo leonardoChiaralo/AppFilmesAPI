@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AppFilmesAPI.Data.DTOs.Filme;
+﻿namespace AppFilmesAPI.Data.DTOs.Filme;
 
 public class UpdateFilmeDTO
 {
